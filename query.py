@@ -14,3 +14,4 @@ def setToken():
     # for LangChain
     os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
     os.environ["SERPAPI_API_KEY"] = os.getenv("SERPAPI_API_KEY")
+
