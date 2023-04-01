@@ -8,6 +8,10 @@ class ReActifyApp(customtkinter.CTk):
     def __init__(self):
         super().__init__()
 
+        # attributes
+        self.temperature = 0
+
+        # basic window
         self.title("ReActify")
         self.geometry("700x450")
 
