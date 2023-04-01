@@ -46,6 +46,6 @@ class fileQuery:
 if __name__ == "__main__":
     # for testing purposes
     myQuery=fileQuery()
-    resp=myQuery.getFileResponse('./state_of_the_union.txt','What did the president say about LGBTQ+',0,False)
+    resp=myQuery.getFileResponse('./Resources/state_of_the_union.txt','What did the president say about LGBTQ+',0,False)
     print(resp)
         
