@@ -2,6 +2,7 @@ import customtkinter
 import tkinter
 import os
 from PIL import Image
+from query import Query
 
 
 class ReActifyApp(customtkinter.CTk):
@@ -273,7 +274,12 @@ class ReActifyApp(customtkinter.CTk):
         self.select_frame_by_name("settings")
 
     def chat_submit(self):
-        pass
+        prompt = self.react_input_box.get("0.0", "end")
+        myquery = Query()
+        myquery.setModel(self.show_reasoning, self.temperature, 1)
+        to_display = myquery.getResponse(prompt)
+        self.react_output_box.delete("0.0", "end")
+        self.react_output_box.insert(to_display)
 
     def react_submit(self):
         pass
