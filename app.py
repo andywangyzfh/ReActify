@@ -163,16 +163,25 @@ class ReActifyApp(customtkinter.CTk):
         self.show_source_checkbox = customtkinter.CTkCheckBox(self.da_submit_frame, text="Show reasoning",
                                                               variable=self.show_source)
         self.show_source_checkbox.grid(
-            row=0, column=0, padx=30, pady=(40, 20), stick="ew")
+            row=0, column=0, padx=30, pady=(40, 10), stick="ew")
+        self.da_select_file_button = customtkinter.CTkButton(
+            master=self.da_submit_frame, command=self.select_file, text="sf", width=100)
+        self.da_select_file_button.grid(
+            row=1, column=0, padx=30, pady=(10, 10))
         self.da_submit_button = customtkinter.CTkButton(
-            master=self.react_submit_frame, command=self.react_submit, text="", width=100)
+            master=self.da_submit_frame, command=self.da_submit, text="", width=100)
         self.da_submit_button.grid(
-            row=1, column=0, padx=30, pady=(10, 20))
+            row=2, column=0, padx=30, pady=(10, 20))
 
-        self.react_output_box = customtkinter.CTkTextbox(
-            master=self.react_frame, state="disabled")
-        self.react_output_box.grid(row=1, column=0, columnspan=2,
-                                   padx=20, pady=20, sticky="nsew")
+        self.da_output_box = customtkinter.CTkTextbox(
+            master=self.da_frame, state="disabled")
+        self.da_output_box.grid(row=1, column=0, columnspan=2,
+                                padx=20, pady=20, sticky="nsew")
+
+        # create settings frame
+        self.settings_frame = customtkinter.CTkFrame(
+            self, corner_radius=0, fg_color="transparent")
+
         # select default frame
         self.select_frame_by_name("home")
 
@@ -194,10 +203,18 @@ class ReActifyApp(customtkinter.CTk):
             self.chat_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.chat_frame.grid_forget()
-        if name == "frame_3":
+        if name == "react":
             self.react_frame.grid(row=0, column=1, sticky="nsew")
         else:
             self.react_frame.grid_forget()
+        if name == "da":
+            self.da_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.da_frame.grid_forget()
+        if name == "settings":
+            self.settings_frame.grid(row=0, column=1, sticky="nsew")
+        else:
+            self.settings_frame.grid_forget()
 
     def home_button_event(self):
         self.select_frame_by_name("home")
@@ -206,18 +223,24 @@ class ReActifyApp(customtkinter.CTk):
         self.select_frame_by_name("chat")
 
     def react_button_event(self):
-        self.select_frame_by_name("frame_3")
+        self.select_frame_by_name("react")
 
     def da_chat_button_event(self):
-        self.select_frame_by_name("frame_4")
+        self.select_frame_by_name("da")
 
     def settings_button_event(self):
-        self.select_frame_by_name("frame_5")
+        self.select_frame_by_name("settings")
 
     def chat_submit(self):
         pass
 
     def react_submit(self):
+        pass
+
+    def da_submit(self):
+        pass
+
+    def select_file(self):
         pass
 
     def change_appearance_mode_event(self, new_appearance_mode):
