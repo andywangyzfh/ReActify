@@ -181,6 +181,43 @@ class ReActifyApp(customtkinter.CTk):
         # create settings frame
         self.settings_frame = customtkinter.CTkFrame(
             self, corner_radius=0, fg_color="transparent")
+        self.openAI_token_label = customtkinter.CTkLabel(self.settings_frame,
+                                                         textvariable=tkinter.StringVar(
+                                                             value="OpenAI API token:"),
+                                                         corner_radius=8)
+        self.openAI_token_label.grid(
+            row=0, column=0, padx=(80, 0), pady=(80, 20), sticky="e")
+        self.openAI_token_input = customtkinter.CTkTextbox(
+            self.settings_frame, height=20)
+        self.openAI_token_input.grid(
+            row=0, column=1, padx=(0, 30), pady=(80, 20), sticky="s")
+
+        self.serpAPI_token_label = customtkinter.CTkLabel(self.settings_frame,
+                                                          textvariable=tkinter.StringVar(
+                                                              value="SERP API token:"),
+                                                          corner_radius=8)
+        self.serpAPI_token_label.grid(
+            row=1, column=0, padx=(30, 0), pady=20, sticky="e")
+        self.serpAPI_token_input = customtkinter.CTkTextbox(
+            self.settings_frame, height=20)
+        self.serpAPI_token_input.grid(
+            row=1, column=1, padx=(0, 30), pady=20, sticky="s")
+
+        self.temp_label = customtkinter.CTkLabel(self.settings_frame,
+                                                 textvariable=tkinter.StringVar(
+                                                     value="LLM temperature (0-1):"),
+                                                 corner_radius=8)
+        self.temp_label.grid(
+            row=2, column=0, padx=(30, 0), pady=20, sticky="e")
+        self.temp_input = customtkinter.CTkTextbox(
+            self.settings_frame, height=20)
+        self.temp_input.grid(
+            row=2, column=1, padx=(0, 30), pady=20, sticky="s")
+
+        self.save_settings_button = customtkinter.CTkButton(
+            master=self.settings_frame, command=self.settings_submit, text="Save", width=100)
+        self.save_settings_button.grid(
+            row=3, column=0, columnspan=2, padx=30, pady=20)
 
         # select default frame
         self.select_frame_by_name("home")
@@ -240,8 +277,14 @@ class ReActifyApp(customtkinter.CTk):
     def da_submit(self):
         pass
 
+    def settings_submit(self):
+        pass
+
     def select_file(self):
         pass
+
+    def slider_event(self):
+        self.temp_str = str(self.temp_slider.get())
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
