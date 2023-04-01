@@ -7,11 +7,8 @@ from langchain.agents import initialize_agent
 import sys
 from io import StringIO
 from langchain.chat_models import ChatOpenAI
-
-# for implemetngin chatgpt with memory
-from langchain.chains import LLMChain
-from langchain.prompts import PromptTemplate
-from langchain.chains.conversation.memory import ConversationBufferMemory
+import time
+import threading
 
 
 class Query:
@@ -31,26 +28,35 @@ class Query:
         self.chatGPT = chatGPT
 
     def getResponse(self, prompt):
-        if (self.chatGPT):  # 尝试implement一个带历史记录的ChatGPT 但接口不一样了 不能return一个string，而是得让他一直跑着跟用户对话，估计得写到前端去
-            # https://ahmadrosid.com/blog/langchain-openai-tutorial
-            llm = OpenAI(temperature=.7)
-            # 可以加个功能：让用户自定义prompt format，
-            template = """Consider the chat history given below. You are an AI. Answer to Human.
-                {chat_history}
-                Human: {question}
-                AI:
-            """
-            prompt_template = PromptTemplate(
-                input_variables=["chat_history", "question"], template=template)
-            memory = ConversationBufferMemory(memory_key="chat_history")
-            llm_chain = LLMChain(
-                llm=OpenAI(),
-                prompt=prompt_template,
-                verbose=True,
-                memory=memory,
-            )
-            answer = llm_chain.predict(question=prompt)
-            return answer
+        if (self.chatGPT):
+            while True:
+                prompt = input('\nAsk a question: ')
+                completion = openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[{"role": "user", "content": prompt}],
+                    max_tokens=1024,
+                    temperature=0.8)
+                message = completion.choices[0].message.content
+                print(message)
+            #messages = []
+            # while True:
+            #     prompt = input('\nAsk a question: ')
+            #     messages.append(
+            #         {
+            #             'role': 'user',
+            #             'content': prompt
+            #         })
+            #     completion = openai.ChatCompletion.create(
+            #         model="gpt-3.5-turbo",
+            #         messages=messages)
+
+            #     response = completion['choices'][0]['message']['content']
+            #     print(response)
+            #     messages.append(
+            #         {
+            #             'role': 'assistant',
+            #             'content': response
+            #         })
         else:
             chat = ChatOpenAI(temperature=self.temperature)
         # Next, let's load some tools to use. Note that the `llm-math` tool uses an LLM, so we need to pass that in.
@@ -60,21 +66,4 @@ class Query:
             agent = initialize_agent(
                 tools, chat, agent="chat-zero-shot-react-description", verbose=True)
         # Now let's test it out!
-            output = StringIO()
-            sys.stdout = output
-            final_result = agent.run(prompt)
-            sys.stdout = sys.__stdout__
-        # Retrieve the output from the StringIO object as a string
-            react_process = output.getvalue()
-            if (self.showProcess):
-                return react_process
-            else:
-                return final_result
-
-
-if __name__ == "__main__":
-    # for testing purposes
-    myquery = Query()
-    myquery.setModel(1, 1, 1)
-    print(myquery.getResponse(
-        "I am traveling from Shanghai to Williamsburg in May, how?"))
+            agent.run(prompt)
