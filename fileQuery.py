@@ -38,7 +38,7 @@ class fileQuery:
         chain=load_qa_with_sources_chain(OpenAI(temperature=temp),chain_type="stuff")
         result=chain({"input_documents": docs, "question": query}, return_only_outputs=output)
         if output==False:
-            response="DOCUMENTS RELATED: "+str(result['input_documents'])+"\nQUESTION: "+str(result['question'])+"\nRESPONSE GENERATED:"+str(result['output_text'])
+            response="DOCUMENTS RELATED: "+str(result['input_documents'])+"\n\nQUESTION: "+str(result['question'])+"\nRESPONSE GENERATED:"+str(result['output_text'])
         else:
             response="RESPONSE GENERATED:"+str(result['output_text'])
         return response

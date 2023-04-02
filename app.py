@@ -2,6 +2,8 @@ import customtkinter
 import tkinter
 import os
 from PIL import Image
+from fileQuery import fileQuery
+from tkinter import filedialog
 
 
 class ReActifyApp(customtkinter.CTk):
@@ -10,6 +12,7 @@ class ReActifyApp(customtkinter.CTk):
 
         self.title("ReActify")
         self.geometry("700x450")
+        self.file_path=""
 
         # set grid layout 1x2
         self.grid_rowconfigure(0, weight=1)
@@ -238,10 +241,35 @@ class ReActifyApp(customtkinter.CTk):
         pass
 
     def da_submit(self):
-        pass
+        self.da_output_box.configure(state='normal')
+        question=self.da_input_box.get("0.0","end")
+        if self.show_source_checkbox.get()==1:
+            self.show_source.set(False)
+        else:
+            self.show_source.set(True)
+        myFileQuery=fileQuery()
+        temperature=0
+        try:
+            response=myFileQuery.getFileResponse(self.file_path,question,temperature,self.show_source.get())
+            if self.show_source_checkbox.get()==1:
+                self.show_source.set(False)
+            else:
+                self.show_source.set(True)
+        except Exception:
+            if self.show_source_checkbox.get()==1:
+                self.show_source.set(False)
+            else:
+                self.show_source.set(True)
+            tkinter.messagebox.showwarning("Data-augmented chat", "Please submit a valid file")
+            
+        self.da_output_box.delete("0.0","end")
+        self.da_output_box.insert("0.0",response)
+        self.da_output_box.configure(state='disabled')
+        
 
     def select_file(self):
-        pass
+        self.file_path=filedialog.askopenfilename()
+        print(self.file_path)
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
