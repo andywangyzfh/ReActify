@@ -1,6 +1,7 @@
 import customtkinter
 import tkinter
 import os
+from dotenv import load_dotenv
 from PIL import Image
 
 
@@ -282,13 +283,35 @@ class ReActifyApp(customtkinter.CTk):
         pass
 
     def settings_submit(self):
-        pass
+        openAI_token = self.openAI_token_input.get("0.0", "end")
+        serpAPI_token = self.serpAPI_token_input.get("0.0", "end")
+        with open('.env', 'w') as file:
+            if openAI_token != "\n":
+                file.write('OPENAI_API_KEY=' +
+                           openAI_token + '\n')
+                print("saved openai token")
+            if serpAPI_token != "\n":
+                file.write('SERPAPI_API_KEY=' +
+                           serpAPI_token + '\n')
+                print("saved serpAPI token")
+        load_dotenv()
+        temp_str = self.temp_input.get("0.0", "end")
+        # print(temp_str)
+        try:
+            value = float(temp_str)
+            if 0 <= value <= 1:
+                self.temperature = value
+                tkinter.messagebox.showinfo(
+                    "Settings", "Settings saved")
+            else:
+                tkinter.messagebox.showwarning(
+                    "Settings", "Please enter a valid temperature")
+        except ValueError:
+            tkinter.messagebox.showwarning(
+                "Settings", "Please enter a valid temperature")
 
     def select_file(self):
         pass
-
-    def slider_event(self):
-        self.temp_str = str(self.temp_slider.get())
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
