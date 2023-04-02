@@ -16,6 +16,7 @@ The required Python packages are:
 - openai
 
 
+## Running
 Once you have installed the required packages, you can run the tool using the following command:
 
 $ python app.py
