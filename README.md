@@ -22,6 +22,7 @@ Before using the tool, you'll need to obtain API keys for SerpAPI and OpenAI. Yo
 Once you have your API keys, create a new file named `.env` in the root directory of the project and add the following lines:
 
 SERP_API_KEY=your_serp_api_key
+
 OPENAI_API_KEY=your_openai_api_key
 
 Replace `your_serp_api_key` and `your_openai_api_key` with your actual API keys.
