@@ -170,7 +170,7 @@ class ReActifyApp(customtkinter.CTk):
         self.da_submit_frame.grid(row=0, column=1, sticky="nsew")
         self.show_source = tkinter.BooleanVar()
         self.show_source.set(True)
-        self.show_source_checkbox = customtkinter.CTkCheckBox(self.da_submit_frame, text="Show reasoning",
+        self.show_source_checkbox = customtkinter.CTkCheckBox(self.da_submit_frame, text="Show sources",
                                                               variable=self.show_source)
         self.show_source_checkbox.grid(
             row=0, column=0, padx=30, pady=(40, 10), stick="ew")
@@ -284,6 +284,7 @@ class ReActifyApp(customtkinter.CTk):
         myquery.setModel(self.temperature, 1)
         to_display = myquery.getResponse(prompt)
         self.chat_output_box.configure(state="normal")
+        self.chat_output_box.delete("0.0","end")
         self.chat_output_box.insert("0.0", to_display)
         self.chat_output_box.configure(state="disabled")
 
