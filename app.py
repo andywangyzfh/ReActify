@@ -25,17 +25,21 @@ class ReActifyApp(customtkinter.CTk):
         image_path = os.path.join(os.path.dirname(
             os.path.realpath(__file__)), "resources")
         self.logo_image = customtkinter.CTkImage(Image.open(os.path.join(
-            image_path, "CustomTkinter_logo_single.png")), size=(26, 26))
+            image_path, "logo.png")), size=(60, 60))
         self.large_test_image = customtkinter.CTkImage(Image.open(
             os.path.join(image_path, "large_test_image.png")), size=(500, 150))
         self.image_icon_image = customtkinter.CTkImage(Image.open(
             os.path.join(image_path, "image_icon_light.png")), size=(20, 20))
-        self.home_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "home_dark.png")),
-                                                 dark_image=Image.open(os.path.join(image_path, "home_light.png")), size=(20, 20))
-        self.chat_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "chat_dark.png")),
-                                                 dark_image=Image.open(os.path.join(image_path, "chat_light.png")), size=(20, 20))
-        self.add_user_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "add_user_dark.png")),
-                                                     dark_image=Image.open(os.path.join(image_path, "add_user_light.png")), size=(20, 20))
+        self.home_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "home.png")),
+                                                 dark_image=Image.open(os.path.join(image_path, "home.png")), size=(20, 20))
+        self.chat_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "chat.png")),
+                                                 dark_image=Image.open(os.path.join(image_path, "chat.png")), size=(20, 20))
+        self.react_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "logo.png")),
+                                                  dark_image=Image.open(os.path.join(image_path, "logo.png")), size=(20, 20))
+        self.da_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "data.png")),
+                                               dark_image=Image.open(os.path.join(image_path, "data.png")), size=(20, 20))
+        self.settings_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "setting.png")),
+                                                     dark_image=Image.open(os.path.join(image_path, "setting.png")), size=(20, 20))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -58,17 +62,17 @@ class ReActifyApp(customtkinter.CTk):
 
         self.react_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="ReAct chat",
                                                     fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                    image=self.add_user_image, anchor="w", command=self.react_button_event)
+                                                    image=self.react_image, anchor="w", command=self.react_button_event)
         self.react_button.grid(row=3, column=0, sticky="ew")
 
         self.da_chat_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Data-augmented chat",
                                                       fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                      image=self.add_user_image, anchor="w", command=self.da_chat_button_event)
+                                                      image=self.da_image, anchor="w", command=self.da_chat_button_event)
         self.da_chat_button.grid(row=4, column=0, sticky="ew")
 
         self.settings_button = customtkinter.CTkButton(self.navigation_frame, corner_radius=0, height=40, border_spacing=10, text="Settings",
                                                        fg_color="transparent", text_color=("gray10", "gray90"), hover_color=("gray70", "gray30"),
-                                                       image=self.add_user_image, anchor="w", command=self.settings_button_event)
+                                                       image=self.settings_image, anchor="w", command=self.settings_button_event)
         self.settings_button.grid(row=5, column=0, sticky="ew")
 
         self.appearance_mode_menu = customtkinter.CTkOptionMenu(self.navigation_frame, values=["Light", "Dark", "System"],
