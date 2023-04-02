@@ -8,10 +8,10 @@ To install the tool, you'll need to clone this repository to your local machine 
 
 The required Python packages are:
 
-- chromdb
+- chromadb
 - customtkinter
 - dotenv
-- PIL
+- Pillow
 - langchains
 - openai
 
