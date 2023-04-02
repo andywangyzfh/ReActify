@@ -303,9 +303,8 @@ class ReActifyApp(customtkinter.CTk):
         else:
             self.show_source.set(True)
         myFileQuery=fileQuery()
-        temperature=0
         try:
-            response=myFileQuery.getFileResponse(self.file_path,question,temperature,self.show_source.get())
+            response=myFileQuery.getFileResponse(self.file_path,question,self.temperature,self.show_source.get())
             if self.show_source_checkbox.get()==1:
                 self.show_source.set(False)
             else:
