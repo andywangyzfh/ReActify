@@ -23,7 +23,6 @@ Once you have your API keys, create a new file named `.env` in the root director
 
 ```
 SERP_API_KEY=your_serp_api_key
-
 OPENAI_API_KEY=your_openai_api_key
 ```
 
