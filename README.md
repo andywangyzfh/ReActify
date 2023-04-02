@@ -2,6 +2,8 @@
 
 This is a tool that includes the ReAct framework and a Data-Augmented Chat tool to create a user-friendly chat interface that can understand and respond to complex or nuanced user queries. 
 
+[DEMO](https://youtu.be/WPlIWKec9O4)
+
 ## Installation
 
 To install the tool, you'll need to clone this repository to your local machine and install the necessary dependencies. You'll also need to have Python 3 installed.
