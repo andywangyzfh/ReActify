@@ -6,6 +6,15 @@ from PIL import Image
 from fileQuery import fileQuery
 from tkinter import filedialog
 from query import Query
+from outputCapturer import OutputCapturer
+import sys
+from io import StringIO
+import re
+
+
+def remove_ansi_codes(text):
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', text)
 
 
 class ReActifyApp(customtkinter.CTk):
@@ -272,16 +281,35 @@ class ReActifyApp(customtkinter.CTk):
     def chat_submit(self):
         prompt = self.chat_input_box.get("0.0", "end")
         myquery = Query()
-
-        myquery.setModel(self.show_reasoning, self.temperature, 1)
+        myquery.setModel(self.temperature, 1)
         to_display = myquery.getResponse(prompt)
-        print(to_display)
         self.chat_output_box.configure(state="normal")
         self.chat_output_box.insert("0.0", to_display)
         self.chat_output_box.configure(state="disabled")
 
     def react_submit(self):
-        pass
+        self.react_output_box.configure(state="normal")
+        self.react_output_box.insert("0.0", "Generating...")
+        self.react_output_box.configure(state="disabled")
+
+        prompt = self.react_input_box.get("0.0", "end")
+        myquery = Query()
+        myquery.setModel(self.temperature, 0)
+
+        stdout = sys.stdout
+        sys.stdout = StringIO()
+        result = myquery.getResponse(prompt)
+        output = sys.stdout.getvalue()
+        output = remove_ansi_codes(output)
+        sys.stdout = stdout
+        self.react_output_box.configure(state="normal")
+        self.react_output_box.delete("0.0", "end")
+        print(self.show_reasoning.get())
+        if (self.show_reasoning.get()):
+            self.react_output_box.insert("0.0", output)
+        else:
+            self.react_output_box.insert("0.0", result)
+        self.react_output_box.configure(state="disabled")
 
     def da_submit(self):
         self.da_output_box.configure(state='normal')
@@ -312,35 +340,13 @@ class ReActifyApp(customtkinter.CTk):
         self.da_output_box.configure(state='disabled')
 
     def settings_submit(self):
-        openAI_token = self.openAI_token_input.get("0.0", "end")
-        serpAPI_token = self.serpAPI_token_input.get("0.0", "end")
-        with open('.env', 'w') as file:
-            if openAI_token != "\n":
-                file.write('OPENAI_API_KEY=' +
-                           openAI_token + '\n')
-                print("saved openai token")
-            if serpAPI_token != "\n":
-                file.write('SERPAPI_API_KEY=' +
-                           serpAPI_token + '\n')
-                print("saved serpAPI token")
-        load_dotenv()
-        temp_str = self.temp_input.get("0.0", "end")
-        # print(temp_str)
-        try:
-            value = float(temp_str)
-            if 0 <= value <= 1:
-                self.temperature = value
-                tkinter.messagebox.showinfo(
-                    "Settings", "Settings saved")
-            else:
-                tkinter.messagebox.showwarning(
-                    "Settings", "Please enter a valid temperature")
-        except ValueError:
-            tkinter.messagebox.showwarning(
-                "Settings", "Please enter a valid temperature")
+        pass
 
     def select_file(self):
         self.file_path = filedialog.askopenfilename()
+
+    def slider_event(self):
+        self.temp_str = str(self.temp_slider.get())
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
