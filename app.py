@@ -289,7 +289,7 @@ class ReActifyApp(customtkinter.CTk):
 
     def react_submit(self):
         self.react_output_box.configure(state="normal")
-        self.react_output_box.insert("0.0", "Generating...")
+        self.react_output_box.delete("0.0", "end")
         self.react_output_box.configure(state="disabled")
 
         prompt = self.react_input_box.get("0.0", "end")
