@@ -4,6 +4,9 @@ import os
 from dotenv import load_dotenv
 from PIL import Image
 from query import Query
+from outputCapturer import OutputCapturer
+import time
+import threading
 
 
 class ReActifyApp(customtkinter.CTk):
@@ -277,50 +280,47 @@ class ReActifyApp(customtkinter.CTk):
     def chat_submit(self):
         prompt = self.chat_input_box.get("0.0", "end")
         myquery = Query()
-
         myquery.setModel(self.show_reasoning, self.temperature, 1)
         to_display = myquery.getResponse(prompt)
-        print(to_display)
         self.chat_output_box.configure(state="normal")
         self.chat_output_box.insert("0.0", to_display)
         self.chat_output_box.configure(state="disabled")
 
     def react_submit(self):
-        pass
+        prompt = self.react_input_box.get("0.0", "end")
+        myquery = Query()
+        myquery.setModel(self.show_reasoning, self.temperature, 0)
+
+        output_capturer = OutputCapturer()
+        output_capturer.start()
+        print_thread = threading.Thread(target=myquery.getResponse, args=(
+            prompt,))
+        print_thread.start()
+
+        while print_thread.is_alive():
+            time.sleep(1)
+            output_capturer.stop()
+            current_output = output_capturer.get_output()
+            print(f"Captured output: {current_output}")
+            self.react_output_box.configure(state="normal")
+            self.react_output_box.delete("0.0", "end")
+            self.react_output_box.insert("0.0", current_output)
+            self.react_output_box.configure(state="disabled")
+            output_capturer.start()
+
+        print_thread.join()
 
     def da_submit(self):
         pass
 
     def settings_submit(self):
-        openAI_token = self.openAI_token_input.get("0.0", "end")
-        serpAPI_token = self.serpAPI_token_input.get("0.0", "end")
-        with open('.env', 'w') as file:
-            if openAI_token != "\n":
-                file.write('OPENAI_API_KEY=' +
-                           openAI_token + '\n')
-                print("saved openai token")
-            if serpAPI_token != "\n":
-                file.write('SERPAPI_API_KEY=' +
-                           serpAPI_token + '\n')
-                print("saved serpAPI token")
-        load_dotenv()
-        temp_str = self.temp_input.get("0.0", "end")
-        # print(temp_str)
-        try:
-            value = float(temp_str)
-            if 0 <= value <= 1:
-                self.temperature = value
-                tkinter.messagebox.showinfo(
-                    "Settings", "Settings saved")
-            else:
-                tkinter.messagebox.showwarning(
-                    "Settings", "Please enter a valid temperature")
-        except ValueError:
-            tkinter.messagebox.showwarning(
-                "Settings", "Please enter a valid temperature")
+        pass
 
     def select_file(self):
         pass
+
+    def slider_event(self):
+        self.temp_str = str(self.temp_slider.get())
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
