@@ -15,9 +15,20 @@ The required Python packages are:
 - langchains
 - openai
 
+## SerpAPI and OpenAI API Keys
 
-## Running
-Once you have installed the required packages, you can run the tool using the following command:
+Before using the tool, you'll need to obtain API keys for SerpAPI and OpenAI. You can register for these APIs on their respective websites and obtain your API keys.
+
+Once you have your API keys, create a new file named `.env` in the root directory of the project and add the following lines:
+
+SERP_API_KEY=your_serp_api_key
+OPENAI_API_KEY=your_openai_api_key
+
+Replace `your_serp_api_key` and `your_openai_api_key` with your actual API keys.
+
+## Usage
+
+To use the tool, run the following command from the command line:
 
 $ python app.py
 
