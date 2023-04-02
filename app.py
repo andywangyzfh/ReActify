@@ -52,8 +52,8 @@ class ReActifyApp(customtkinter.CTk):
                                                dark_image=Image.open(os.path.join(image_path, "data.png")), size=(20, 20))
         self.settings_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "setting.png")),
                                                      dark_image=Image.open(os.path.join(image_path, "setting.png")), size=(20, 20))
-        self.homepage_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "home.jpeg")),
-                                                     dark_image=Image.open(os.path.join(image_path, "home.jpeg")), size=(500, 375))
+        self.homepage_image = customtkinter.CTkImage(light_image=Image.open(os.path.join(image_path, "homepage.jpeg")),
+                                                     dark_image=Image.open(os.path.join(image_path, "homepage.jpeg")), size=(550, 400))
 
         # create navigation frame
         self.navigation_frame = customtkinter.CTkFrame(self, corner_radius=0)
@@ -102,7 +102,7 @@ class ReActifyApp(customtkinter.CTk):
         self.home_frame_large_image_label = customtkinter.CTkLabel(
             self.home_frame, text="", image=self.homepage_image, corner_radius=10)
         self.home_frame_large_image_label.grid(
-            row=0, column=0, padx=20, pady=30)
+            row=0, column=0, padx=0, pady=25, sticky="nsew")
 
         # create chat frame
         self.chat_frame = customtkinter.CTkFrame(
