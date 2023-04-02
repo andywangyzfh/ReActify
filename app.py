@@ -304,7 +304,6 @@ class ReActifyApp(customtkinter.CTk):
         sys.stdout = stdout
         self.react_output_box.configure(state="normal")
         self.react_output_box.delete("0.0", "end")
-        print(self.show_reasoning.get())
         if (self.show_reasoning.get()):
             self.react_output_box.insert("0.0", output)
         else:
