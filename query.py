@@ -9,6 +9,8 @@ from io import StringIO
 from langchain.chat_models import ChatOpenAI
 import time
 import threading
+from outputCapturer import OutputCapturer
+from contextlib import redirect_stdout
 
 
 class Query:
@@ -30,14 +32,13 @@ class Query:
     def getResponse(self, prompt):
         if (self.chatGPT):
             while True:
-                prompt = input('\nAsk a question: ')
                 completion = openai.ChatCompletion.create(
                     model="gpt-3.5-turbo",
                     messages=[{"role": "user", "content": prompt}],
                     max_tokens=1024,
                     temperature=0.8)
                 message = completion.choices[0].message.content
-                print(message)
+                return message
             #messages = []
             # while True:
             #     prompt = input('\nAsk a question: ')
@@ -67,3 +68,23 @@ class Query:
                 tools, chat, agent="chat-zero-shot-react-description", verbose=True)
         # Now let's test it out!
             agent.run(prompt)
+
+
+if __name__ == "__main__":
+    myquery = Query()
+    myquery.setModel(0, 0, 0)
+    # myquery.getResponse(
+    #     "In the city where the CEO of Tesla was born, what is the average price of houses?")
+
+    # print_thread = threading.Thread(target=print_to_terminal)
+    print_thread = threading.Thread(target=myquery.getResponse, args=(
+        "In the city where the CEO of Tesla was born, what is the average price of houses?",))
+    print_thread.start()
+
+    while print_thread.is_alive():
+        with StringIO() as buf, redirect_stdout(buf):
+            print('redirected:')
+            output = buf.getvalue()
+            print(output)
+
+    print_thread.join()
