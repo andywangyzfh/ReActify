@@ -21,9 +21,9 @@ Before using the tool, you'll need to obtain API keys for SerpAPI and OpenAI. Yo
 
 Once you have your API keys, create a new file named `.env` in the root directory of the project and add the following lines:
 
-SERP_API_KEY=your_serp_api_key
+``SERP_API_KEY=your_serp_api_key``
 
-OPENAI_API_KEY=your_openai_api_key
+``OPENAI_API_KEY=your_openai_api_key``
 
 Replace `your_serp_api_key` and `your_openai_api_key` with your actual API keys.
 
@@ -31,7 +31,7 @@ Replace `your_serp_api_key` and `your_openai_api_key` with your actual API keys.
 
 To use the tool, run the following command from the command line:
 
-$ python app.py
+``$ python app.py``
 
 This will launch the tool's user interface in the customtkinterGUI. You can engage in a natural language chat with the AI language models using the provided interface.
 
