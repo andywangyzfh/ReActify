@@ -7,8 +7,14 @@ from fileQuery import fileQuery
 from tkinter import filedialog
 from query import Query
 from outputCapturer import OutputCapturer
-import time
-import threading
+import sys
+from io import StringIO
+import re
+
+
+def remove_ansi_codes(text):
+    ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
+    return ansi_escape.sub('', text)
 
 
 class ReActifyApp(customtkinter.CTk):
@@ -275,35 +281,35 @@ class ReActifyApp(customtkinter.CTk):
     def chat_submit(self):
         prompt = self.chat_input_box.get("0.0", "end")
         myquery = Query()
-        myquery.setModel(self.show_reasoning, self.temperature, 1)
+        myquery.setModel(self.temperature, 1)
         to_display = myquery.getResponse(prompt)
         self.chat_output_box.configure(state="normal")
         self.chat_output_box.insert("0.0", to_display)
         self.chat_output_box.configure(state="disabled")
 
     def react_submit(self):
+        self.react_output_box.configure(state="normal")
+        self.react_output_box.insert("0.0", "Generating...")
+        self.react_output_box.configure(state="disabled")
+
         prompt = self.react_input_box.get("0.0", "end")
         myquery = Query()
-        myquery.setModel(self.show_reasoning, self.temperature, 0)
+        myquery.setModel(self.temperature, 0)
 
-        output_capturer = OutputCapturer()
-        output_capturer.start()
-        print_thread = threading.Thread(target=myquery.getResponse, args=(
-            prompt,))
-        print_thread.start()
-
-        while print_thread.is_alive():
-            time.sleep(1)
-            output_capturer.stop()
-            current_output = output_capturer.get_output()
-            print(f"Captured output: {current_output}")
-            self.react_output_box.configure(state="normal")
-            self.react_output_box.delete("0.0", "end")
-            self.react_output_box.insert("0.0", current_output)
-            self.react_output_box.configure(state="disabled")
-            output_capturer.start()
-
-        print_thread.join()
+        stdout = sys.stdout
+        sys.stdout = StringIO()
+        result = myquery.getResponse(prompt)
+        output = sys.stdout.getvalue()
+        output = remove_ansi_codes(output)
+        sys.stdout = stdout
+        self.react_output_box.configure(state="normal")
+        self.react_output_box.delete("0.0", "end")
+        print(self.show_reasoning.get())
+        if (self.show_reasoning.get()):
+            self.react_output_box.insert("0.0", output)
+        else:
+            self.react_output_box.insert("0.0", result)
+        self.react_output_box.configure(state="disabled")
 
     def da_submit(self):
         self.da_output_box.configure(state='normal')
