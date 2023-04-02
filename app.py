@@ -269,7 +269,6 @@ class ReActifyApp(customtkinter.CTk):
 
     def select_file(self):
         self.file_path=filedialog.askopenfilename()
-        print(self.file_path)
 
     def change_appearance_mode_event(self, new_appearance_mode):
         customtkinter.set_appearance_mode(new_appearance_mode)
